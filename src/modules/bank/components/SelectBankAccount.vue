@@ -40,6 +40,7 @@
                   :value="option.bankName"
                   @change="onInputChangeHandler"
                   class="input-radio"
+                  required
                 />
               </div>
               <hr class="horizontal" />
@@ -58,14 +59,16 @@
         :to="{ name: 'fallback-page' }"
         class="global-fullwidth-button"
       >
-        <button class="global-fullwidth-button">Proceed</button></router-link
+        <button :disabled="!isSelectedUserBank" class="global-fullwidth-button">
+          Proceed
+        </button></router-link
       >
     </template>
   </basic-stretched-layout>
 </template>
 <script>
 import { useStore } from "vuex";
-import { computed } from "@vue/reactivity";
+import { computed, ref } from "@vue/reactivity";
 
 import BasicStretchedLayout from "@/layouts/BasicStretchedLayout.vue";
 import CertificationProgress from "@/components/CertificationProgress.vue";
@@ -82,6 +85,8 @@ export default {
     const panValue = store.state.basicStore.panValue;
     const panCardsInformation = store.state.bankStore.panCardsInformation;
 
+    const isSelectedUserBank = ref(false);
+
     const currentUserBankOptions = computed(
       () =>
         panCardsInformation.find(
@@ -91,13 +96,15 @@ export default {
 
     const onInputChangeHandler = (e) => {
       store.dispatch("bankStore/onSetValueAction", {
-        type: "selectedBank",
+        type: "selectedUserBank",
         value: e.target.value,
       });
+      isSelectedUserBank.value = e.target.validity.valid;
     };
 
     return {
       currentUserBankOptions,
+      isSelectedUserBank,
       onInputChangeHandler,
     };
   },

@@ -5,19 +5,25 @@
       labelOfField="Gender"
       optionsLayout="row"
       :options="['Male', 'Female', 'Other']"
+      :required="true"
+      validFieldType="isGenderValid"
     ></radio-input-field>
     <input-field
       nameOfField="dateOfBirth"
       typeOfField="date"
       labelOfField="Date of Birth (DD/MM/YYYY)"
       helperText="Enter Date of Birth as per valid KYC Document"
-      maxDateRange="2022-07-15"
+      maxDateRange="2005-07-15"
+      :required="true"
+      validFieldType="isDateOfBirthValid"
     ></input-field>
     <input-field
       nameOfField="email"
       typeOfField="email"
       labelOfField="Enter email ID"
       helperText="We will send all Insurance related documents on this email address, enter valid email."
+      :required="true"
+      validFieldType="isEmailValid"
     ></input-field>
     <file-input-field
       nameOfField="userPhoto"
@@ -32,12 +38,13 @@
       helperLabel="Description of which marksheet to upload"
       :options="['10th pass', 'Intermediate', 'Graduation']"
       defaultOptionLabel="Select educational qualification"
+      :required="true"
+      validFieldType="isEducationalQualificationValid"
     ></dropdown-field>
     <file-input-field
       nameOfField="educationCertificate"
       helperText="Upload marksheet or degree certificate"
     ></file-input-field>
-
     <input-field
       nameOfField="GSTNumber"
       typeOfField="text"

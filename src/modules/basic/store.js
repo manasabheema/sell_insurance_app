@@ -11,18 +11,24 @@ export const basic = {
       isBasicDetailsCompleted: null,
       userName: null,
       gender: null,
+      isGenderValid: null,
       dateOfBirth: null,
+      isDateOfBirthValid: null,
       email: null,
+      isEmailValid: null,
       userPhoto: null,
       educationalQualification: null,
+      isEducationalQualificationValid: null,
       educationCertificate: null,
       GSTNumber: null,
       address: null,
+      isAddressValid: null,
     };
   },
 
   mutations: {
     setValue(state, { type, value }) {
+      // console.log(" type and Value : ", type, value);
       state[type] = value;
     },
     setIsValidPan(state, valid) {

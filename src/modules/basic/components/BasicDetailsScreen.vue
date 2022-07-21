@@ -33,7 +33,11 @@
     </template>
 
     <template v-slot:footer>
-      <button @click="onDetailsSubmit" class="global-fullwidth-button">
+      <button
+        @click="onDetailsSubmit"
+        :disabled="!allRequiredFieldsValid"
+        class="global-fullwidth-button"
+      >
         Proceed
       </button>
     </template>
@@ -64,6 +68,17 @@ export default {
     const store = useStore();
     const router = useRouter();
 
+    const allRequiredFieldsValid = computed(() => {
+      const valid =
+        store.state.basicStore.isGenderValid &&
+        store.state.basicStore.isDateOfBirthValid &&
+        store.state.basicStore.isEmailValid &&
+        store.state.basicStore.isEducationalQualificationValid &&
+        store.state.basicStore.isAddressValid;
+
+      return valid;
+    });
+
     const userName = computed(() => {
       return store.state.basicStore.userName;
     });
@@ -89,6 +104,7 @@ export default {
       panValue,
       isPANVerified,
       userName,
+      allRequiredFieldsValid,
       onDetailsSubmit,
     };
   },

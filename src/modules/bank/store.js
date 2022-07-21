@@ -15,6 +15,7 @@ export const bank = {
       stateSearchValue: null,
       showBankList: true,
       showStateList: true,
+      selectedUserBank: null,
     };
   },
 

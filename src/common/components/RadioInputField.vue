@@ -10,6 +10,7 @@
           :value="option"
           @change="onInputChangeHandler"
           class="input-radio"
+          :required="required"
         />
         <label :for="option" class="label-value">{{ option }}</label>
       </div>
@@ -29,11 +30,18 @@ export default {
     labelOfField: {
       type: String,
     },
+    validFieldType: {
+      type: String,
+    },
     options: {
       type: Array,
     },
     optionsLayout: {
       type: String,
+    },
+    required: {
+      type: Boolean,
+      default: false,
     },
   },
   setup(props) {
@@ -43,6 +51,10 @@ export default {
       store.dispatch("basicStore/onSetValueAction", {
         type: props.nameOfField,
         value: e.target.value,
+      });
+      store.dispatch("basicStore/onSetValueAction", {
+        type: props.validFieldType,
+        value: e.target.validity.valid,
       });
     };
 

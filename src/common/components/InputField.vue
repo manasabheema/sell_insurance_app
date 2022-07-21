@@ -17,13 +17,23 @@
     <label :for="nameOfField" class="form-control-placeholder"
       >{{ labelOfField }}
     </label>
-    <img src="../../assets/invalid.png" alt="" class="invalid-icon" />
-    <p id="helper-text" class="helper-text">{{ helperText }}</p>
+    <img
+      src="../../assets/invalid.png"
+      alt=""
+      :class="[{ 'date-invalid-icon': dateInvalidIcon }, 'invalid-icon']"
+    />
+    <p
+      id="helper-text"
+      :class="[{ 'helper-text-date-valid': dateInvalidIcon }, 'helper-text']"
+    >
+      {{ helperText }}
+    </p>
   </div>
 </template>
 
 <script>
 import { useStore } from "vuex";
+import { computed, ref } from "vue";
 
 export default {
   name: "inputField",
@@ -37,17 +47,18 @@ export default {
       required: true,
       default: "text",
     },
-    labelOfField: {
+    validFieldType: {
       type: String,
     },
-    value: {
+    labelOfField: {
       type: String,
     },
     helperText: {
       type: String,
     },
     required: {
-      type: String,
+      type: Boolean,
+      default: false,
     },
     disabled: {
       type: Boolean,
@@ -63,23 +74,34 @@ export default {
     },
   },
 
+  emits: ["isValidField"],
   setup(props) {
     const store = useStore();
+
+    const dateInvalidIcon = ref(true);
+
+    const value = computed(() => {
+      const field = props.nameOfField;
+      return store.state.basicStore[field] ?? "";
+    });
 
     const onInputChangeHandler = (e) => {
       store.dispatch("basicStore/onSetValueAction", {
         type: props.nameOfField,
         value: e.target.value,
       });
-      if (props?.nameOfField == "panValue") {
-        store.dispatch("basicStore/onSetValueAction", {
-          type: "isValidPan",
-          value: e.target.validity.valid,
-        });
+      store.dispatch("basicStore/onSetValueAction", {
+        type: props.validFieldType,
+        value: e.target.validity.valid,
+      });
+      if (props.typeOfField == "date") {
+        dateInvalidIcon.value = e.target.validity.valid;
       }
     };
 
     return {
+      value,
+      dateInvalidIcon,
       onInputChangeHandler,
     };
   },
@@ -166,5 +188,15 @@ input:not(:focus):not(:placeholder-shown):invalid ~ .invalid-icon {
 }
 input:not(:focus):not(:placeholder-shown):invalid ~ .helper-text {
   color: red;
+}
+
+input[type="date"]:not(:focus):invalid {
+  border-color: grey;
+}
+input[type="date"]:not(:focus):invalid ~ .date-invalid-icon {
+  display: none;
+}
+input[type="date"]:not(:focus):invalid ~ .helper-text-date-valid {
+  color: dimgray;
 }
 </style>

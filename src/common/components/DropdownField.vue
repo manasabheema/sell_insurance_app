@@ -9,7 +9,7 @@
         :id="nameOfField"
         :name="nameOfField"
         @change="onInputChangeHandler"
-        required
+        :required="required"
       >
         <option value="" selected disabled hidden>
           {{ defaultOptionLabel }}
@@ -37,6 +37,9 @@ export default {
       type: String,
       required: true,
     },
+    validFieldType: {
+      type: String,
+    },
     labelOfField: {
       type: String,
     },
@@ -49,6 +52,10 @@ export default {
     defaultOptionLabel: {
       type: String,
     },
+    required: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
     const store = useStore();
@@ -57,6 +64,10 @@ export default {
       store.dispatch("basicStore/onSetValueAction", {
         type: props.nameOfField,
         value: e.target.value,
+      });
+      store.dispatch("basicStore/onSetValueAction", {
+        type: props.validFieldType,
+        value: e.target.validity.valid,
       });
     };
 

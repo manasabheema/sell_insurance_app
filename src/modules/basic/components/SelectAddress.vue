@@ -48,6 +48,10 @@ export default {
         type: "address",
         value: e.target.value,
       });
+      store.dispatch("basicStore/onSetValueAction", {
+        type: "isAddressValid",
+        value: e.target.validity.valid,
+      });
     };
 
     return {

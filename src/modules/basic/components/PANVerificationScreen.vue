@@ -12,6 +12,7 @@
         :helperText="PANHelperText"
         regexPattern="[A-Z]{5}[0-9]{4}[A-Z]{1}"
         required="true"
+        validFieldType="isValidPan"
       ></input-field>
     </template>
     <template v-slot:footer>
